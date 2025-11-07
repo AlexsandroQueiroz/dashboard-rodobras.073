@@ -33,13 +33,15 @@ if uploaded_file:
     df_main = pd.read_excel(uploaded_file)
 
     # ----------------- Remover linhas REMUNERACAO -----------------
-    coluna_tipo = df_main.columns[2]  # Coluna C
-    df_main = df_main[df_main[coluna_tipo] != "REMUNERACAO"].copy()
+    coluna_tipo1 = df_main.columns[2]  # Coluna C
+    coluna_tipo2 = df_main.columns[42] # Coluna AQ
+    df_main = df_main[df_main[coluna_tipo1] != "REMUNERACAO"].copy()
+    df_main = df_main[~df_main[coluna_tipo2].str.contains("DIARIA", case=False, na=False)].copy()
 
     # ----------------- Renomear colunas importantes -----------------
     df_main.rename(columns={
         df_main.columns[8]: 'Placa',
-        df_main.columns[27]: 'Valor',
+        df_main.columns[28]: 'Valor',
         df_main.columns[4]: 'Data'
     }, inplace=True)
     df_main['Data'] = pd.to_datetime(df_main['Data'], errors='coerce')
